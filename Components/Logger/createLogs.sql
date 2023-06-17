@@ -1,0 +1,11 @@
+-- CREATE DATABASE logger;
+CREATE DATABASE crud_logger;
+
+CREATE TABLE log(
+    id_log SERIAL PRIMARY KEY,
+    log_time VARCHAR(200) NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    obj VARCHAR(200) NOT NULL,
+    method VARCHAR(200) NOT NULL,
+    msg VARCHAR(500)
+);
