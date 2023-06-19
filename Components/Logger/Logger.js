@@ -1,6 +1,3 @@
-
-
-
 import db from '../Database/Database.js';
 
 class Logger{
@@ -9,7 +6,7 @@ class Logger{
     this.dbModule.executeQuery("createLogTable");
   }
 
-  log = (object, method, message) =>{
+  log = (type, object, method, message) =>{
     try{
 
       const currentDate = new Date();
@@ -17,7 +14,7 @@ class Logger{
       const hour = currentDate.getHours();
       const minute = currentDate.getMinutes();
       const second = currentDate.getSeconds();
-      const values = [date + ' ' + hour + ':' + minute + ':' + second, 'log', object, method, message];
+      const values = [date + ' ' + hour + ':' + minute + ':' + second, type, object, method, message];
       this.dbModule.executeQuery("insertLog", values);
     }catch(e){
       console.log("ERROR EN LOGGER");

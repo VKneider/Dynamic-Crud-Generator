@@ -1,6 +1,7 @@
 import fs from "fs";
 import db from "../Database/Database.js";
-
+import logger from "../Logger/Logger.js";
+import { log } from "console";
 
 class ClassGenerator {
     constructor(dbComponent) {
@@ -33,9 +34,10 @@ class ClassGenerator {
             fs.writeFile(`${tableName}.js`, classContent, err => {
                 if (err) {
                     console.error(`❌ Error al crear el archivo ${tableName}.js:`, err);
-                } else {
+                    logger.log("error","ClassGenerator", "generateClassFiles", `❌ Error al crear el archivo ${tableName}.js: ${err}`)
+                } 
                     console.log(`✅ Archivo ${tableName}.js creado exitosamente.`);
-                }
+                    logger.log("log","ClassGenerator", "generateClassFiles", `✅ Archivo ${tableName}.js creado exitosamente.`)
             });
         });
     }
@@ -58,6 +60,7 @@ class ClassGenerator {
             return catalog;
         } catch (error) {
             console.error("Error al obtener el catálogo de tablas y campos:", error);
+            logger.log("error","ClassGenerator", "getCatalog", `Error al obtener el catálogo de tablas y campos: ${error}`)
         }
     }
 
