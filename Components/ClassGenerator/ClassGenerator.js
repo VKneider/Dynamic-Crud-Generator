@@ -43,26 +43,40 @@ class ClassGenerator {
     }
 
     async getCatalog() {
-
         try {
-            const result = await this.dbComponent.executeQuery("catalogQuery");
+          const result = await this.dbComponent.executeQuery("catalogQuery");
+          const catalog = {};
+      
+          result.rows.forEach(row => {
+            const { table_name, column_name, data_type } = row;
+            if (!catalog[table_name]) {
+              catalog[table_name] = {};
+            }
 
-            const catalog = {};
+            const dataTypes = {
+                "character varying": "string",
+                "integer": "number",
+                "boolean": "boolean",
+                "timestamp without time zone": "Date",
+                "date": "Date",
+                "numeric": "number",
+                "double precision": "number",
+                "bigint": "number",
+                "text": "string",
+                "character": "string"
+            }
 
-            result.rows.forEach(row => {
-                const { table_name, column_name, data_type } = row;
-                if (!catalog[table_name]) {
-                    catalog[table_name] = {};
-                }
-                catalog[table_name][column_name] = { data_type };
-            });
-
-            return catalog;
+                
+                
+            catalog[table_name][column_name] = dataTypes[data_type];
+          });
+      
+          return catalog;
         } catch (error) {
-            console.error("Error al obtener el catálogo de tablas y campos:", error);
-            logger.log("error","ClassGenerator", "getCatalog", `Error al obtener el catálogo de tablas y campos: ${error}`)
+          console.error("Error al obtener el catálogo de tablas y campos:", error);
+          logger.log("error","ClassGenerator", "getCatalog", `Error al obtener el catálogo de tablas y campos: ${error}`);
         }
-    }
+      }
 
     run = async () => {
 

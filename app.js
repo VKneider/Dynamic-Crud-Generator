@@ -59,7 +59,6 @@ app.post("/runQuery", async (req, res) => {
 
         const queryGenerator = {
             insert: (tableName, values) => {
-                console.log("xd");
                 return `INSERT INTO ${tableName} (${Object.keys(values).join(",")}) VALUES (${Object.values(values).join(",")})`;
             },
 
@@ -84,10 +83,8 @@ app.post("/runQuery", async (req, res) => {
                 return `DELETE FROM ${tableName} WHERE ${condition}`;
             },
 
-            select: (tableName, columns = "*", conditional = null) => {
-                const condition = conditional ? `WHERE ${conditional.tableField} = ${conditional.value}` : "";
-
-                return `SELECT ${columns} FROM ${tableName} ${condition}`;
+            select: (query) => {
+                
             }
         };
 
@@ -100,15 +97,3 @@ app.post("/runQuery", async (req, res) => {
         logger.log("error", "app", "runQuery", error);
     }
 });
-
-/*
-
-let LogDialog = new LogDialog();
-
-*css del LogDialog
-absolute
-esquina super derecha
-
-metemos LogDialog en todas las vistas
-
-*/
