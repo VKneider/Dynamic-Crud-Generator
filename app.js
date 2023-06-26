@@ -35,6 +35,7 @@ app.get("/getCatalog", async (req, res) => {
         const catalog = await classGenerator.getCatalog();
         res.send({ status: responseStatus.success, catalog: catalog, message: "Catalogo obtenido correctamente" });
         logger.log("log", "app", "getCatalog", "Catalogo despachado correctamente");
+        console.log("here xD")
     } catch (error) {
         res.send({ status: responseStatus.error, message: "Error al obtener el catalogo" });
         logger.log("error", "app", "getCatalog", error);
