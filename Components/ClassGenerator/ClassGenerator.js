@@ -34,25 +34,19 @@ class ClassGenerator {
             fs.writeFile(`${tableName}.js`, classContent, err => {
                 if (err) {
                     console.error(`❌ Error al crear el archivo ${tableName}.js:`, err);
-                    logger.log("error","ClassGenerator", "generateClassFiles", `❌ Error al crear el archivo ${tableName}.js: ${err}`)
-                } 
-                    console.log(`✅ Archivo ${tableName}.js creado exitosamente.`);
-                    logger.log("log","ClassGenerator", "generateClassFiles", `✅ Archivo ${tableName}.js creado exitosamente.`)
+                    logger.log("error", "ClassGenerator", "generateClassFiles", `❌ Error al crear el archivo ${tableName}.js: ${err}`)
+                }
+                console.log(`✅ Archivo ${tableName}.js creado exitosamente.`);
+                logger.log("log", "ClassGenerator", "generateClassFiles", `✅ Archivo ${tableName}.js creado exitosamente.`)
             });
         });
     }
 
     async getCatalog() {
         try {
-          const result = await this.dbComponent.executeQuery("catalogQuery");
-          const catalog = {};
-      
-          result.rows.forEach(row => {
-            const { table_name, column_name, data_type } = row;
-            if (!catalog[table_name]) {
-              catalog[table_name] = {};
-            }
-
+            const result = await this.dbComponent.executeQuery("catalogQuery");
+            const catalog = {};
+            
             const dataTypes = {
                 "character varying": "string",
                 "integer": "number",
@@ -66,39 +60,50 @@ class ClassGenerator {
                 "character": "string"
             }
 
+            result.rows.forEach((row) => {
+                const { table_name, column_name, data_type, constraint_type } = row;
+                const field = {
+                  fieldName: column_name,
+                  type: dataTypes[data_type],
+                  constraint: constraint_type,
+                };
                 
-                
-            catalog[table_name][column_name] = dataTypes[data_type];
-          });
-      
-          return catalog;
+                if (!catalog[table_name]) {
+                  catalog[table_name] = [];
+                }
+          
+                catalog[table_name].push(field);
+              });
+          
+
+            return catalog;
         } catch (error) {
-          console.error("Error al obtener el catálogo de tablas y campos:", error);
-          logger.log("error","ClassGenerator", "getCatalog", `Error al obtener el catálogo de tablas y campos: ${error}`);
+            console.error("Error al obtener el catálogo de tablas y campos:", error);
+            logger.log("error", "ClassGenerator", "getCatalog", `Error al obtener el catálogo de tablas y campos: ${error}`);
         }
-      }
+    }
 
     run = async () => {
 
         try {
             const catalog = await this.getCatalog();
 
-        // Crear la carpeta si no existe
-        const folderName = "./TableModels";
-        if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
-        }
+            // Crear la carpeta si no existe
+            const folderName = "./TableModels";
+            if (!fs.existsSync(folderName)) {
+                fs.mkdirSync(folderName);
+            }
 
 
-        // Cambiar al directorio de la carpeta
-        process.chdir(folderName);
+            // Cambiar al directorio de la carpeta
+            process.chdir(folderName);
 
-        // Generar los archivos de clases
-        this.generateClassFiles(catalog);
+            // Generar los archivos de clases
+            this.generateClassFiles(catalog);
         } catch (error) {
             console.log(error)
         }
-        
+
     };
 
 
