@@ -1,7 +1,6 @@
 import fs from "fs";
 import db from "../Database/Database.js";
 import logger from "../Logger/Logger.js";
-import { log } from "console";
 
 class ClassGenerator {
     constructor(dbComponent) {
@@ -46,7 +45,7 @@ class ClassGenerator {
         try {
             const result = await this.dbComponent.executeQuery("catalogQuery");
             const catalog = {};
-            
+
             const dataTypes = {
                 "character varying": "string",
                 "integer": "number",
@@ -63,18 +62,18 @@ class ClassGenerator {
             result.rows.forEach((row) => {
                 const { table_name, column_name, data_type, constraint_type } = row;
                 const field = {
-                  fieldName: column_name,
-                  type: dataTypes[data_type],
-                  constraint: constraint_type,
+                    fieldName: column_name,
+                    type: dataTypes[data_type],
+                    isForeign: constraint_type === "fkey"
                 };
-                
+
                 if (!catalog[table_name]) {
-                  catalog[table_name] = [];
+                    catalog[table_name] = [];
                 }
-          
+
                 catalog[table_name].push(field);
-              });
-          
+            });
+
 
             return catalog;
         } catch (error) {
@@ -83,7 +82,7 @@ class ClassGenerator {
         }
     }
 
-    run = async () => {
+    async run() {
 
         try {
             const catalog = await this.getCatalog();
