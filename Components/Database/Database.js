@@ -1,17 +1,16 @@
-import pkg from "pg";
-const { Pool } = pkg;
+import pkg from 'pg';
 
-import sentences from "./DBSentences.js";
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-console.log("DB_USER", process.env.DB_USER)
+import sentences from './DBSentences.js';
+import dotenv from 'dotenv';
+const { Pool } = pkg;
+dotenv.config({ path: './.env' });
+console.log('DB_USER', process.env.DB_USER);
 
 class Database {
   constructor(config) {
     this.sentences = sentences;
     this.pool = new Pool(config);
   }
-
 
   executeQuery = async (query, props) => {
     try {
@@ -22,16 +21,13 @@ class Database {
     }
   };
 
-
-
   getCnn = async () => {
     try {
       return await this.pool.connect();
     } catch (e) {
       console.log(e);
     }
-  }
-
+  };
 
   returnCnn = async (cli) => {
     try {
@@ -39,13 +35,10 @@ class Database {
     } catch (e) {
       console.log(e);
     }
-  }
-
-
+  };
 }
 
-
-let db = new Database({
+const db = new Database({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
