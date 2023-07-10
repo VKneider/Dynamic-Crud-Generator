@@ -1,5 +1,4 @@
-let sentences = {
-
+const sentences = {
   catalogQuery: `SELECT
     c.table_name,
     c.column_name,
@@ -21,7 +20,8 @@ let sentences = {
   WHERE
     table_schema = 'public'
 `,
-  insertLog: 'INSERT INTO log (log_time, type, obj, method, msg) VALUES ($1, $2, $3, $4, $5)',
+  insertLog:
+    'INSERT INTO log (log_time, type, obj, method, msg) VALUES ($1, $2, $3, $4, $5)',
   createLogTable: `CREATE TABLE IF NOT EXISTS log ( 
       id_log SERIAL PRIMARY KEY,
       log_time VARCHAR(200) NOT NULL,
@@ -29,7 +29,6 @@ let sentences = {
       obj VARCHAR(200) NOT NULL,
       method VARCHAR(200) NOT NULL,
       msg VARCHAR(500))`,
-
-}
+};
 
 export default sentences;
