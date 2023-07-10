@@ -1,19 +1,14 @@
 <a name="readme-top"></a>
 
-
 <!-- PROJECT SHIELDS -->
 
-<div align="center"> 
+<div align="center">
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-  
-</div> 
 
-
-
-
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -22,7 +17,6 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  
 <h1 align="center">Dynamic Crud Subsystem</h1>
 
   <p align="center">
@@ -31,8 +25,6 @@
     <br />
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -56,27 +48,24 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 ### Built With
 
-* [![React][React.js]][React-url]
-* [![Node][Node.js]][Node-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+- [![React][React.js]][React-url]
+- [![Node][Node.js]][Node-url]
+- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 <p This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps. </p>
@@ -85,42 +74,41 @@
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
-<br>
+  <br>
 
 ### Installation
 
-
 1. Clone the repo
+
    ```sh
    git clone https://github.com/VKneider/Dynamic-Crud-Generator.git
    cd ./Dynamic-Crud-Generator
    ```
-  <br>
-  
+
+   <br>
+
 2. Install NPM packages
    ```sh
    npm install
    ```
    <br>
-   
-4. Enter your DATABASE CREDENTIALS in `.env`
+3. Enter your DATABASE CREDENTIALS in `.env`
    ```js
-   DB_USER="USER"
-   DB_PASS="PASS"
+   DB_USER = 'USER';
+   DB_PASS = 'PASS';
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <br>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -139,6 +127,7 @@ Don't forget to give the project a star! Thanks again!
 <br>
 
 <!-- CONTACT -->
+
 ## Contact
 
 <table align="center" >
@@ -161,17 +150,13 @@ Don't forget to give the project a star! Thanks again!
     <td>Venezuela</td>
   </tr>
 
-
-  
  </table>
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/VKneider/Dynamic-Crud-Generator.svg?style=for-the-badge
 [contributors-url]: https://github.com/VKneider/Dynamic-Crud-Generator/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/VKneider/Dynamic-Crud-Generator.svg?style=for-the-badge
