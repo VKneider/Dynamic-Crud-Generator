@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import db from './Components/Database/Database.js';
 
 // Import de Componentes
 import logger from './Components/Logger/Logger.js';
@@ -25,6 +26,7 @@ app.listen(app.get('port'), () => {
 
 app.get('/catalog', async (req, res) => {
   try {
+    console.log('llegó el request');
     res.json({
       status: responseStatus.success,
       catalog,
@@ -59,6 +61,33 @@ app.post('/generateClasses', async (req, res) => {
       message: 'Clases Incorrectamente',
     });
     logger.log('error', 'app', 'generateClasses', error);
+  }
+});
+
+app.get('/tableRows', async (req, res) => {
+  try {
+    const { tableName } = req.query;
+    console.log(tableName);
+    console.log('llegó el request para la tabla' + tableName);
+    const tableRows = await classGenerator.getTableRows(tableName);
+
+    res.json({
+      status: responseStatus.success,
+      tableRows,
+      message: 'Filas de la tabla obtenidas correctamente',
+    });
+    logger.log(
+      'log',
+      'app',
+      'getTableRows',
+      'Filas de la tabla obtenidas correctamente',
+    );
+  } catch (error) {
+    res.json({
+      status: responseStatus.error,
+      message: 'Error al obtener las filas de la tabla',
+    });
+    logger.log('error', 'app', 'getTableRows', error);
   }
 });
 
@@ -112,5 +141,20 @@ app.post('/runQuery', async (req, res) => {
     logger.log('log', 'app', 'runQuery', 'Query ejecutada correctamente');
   } catch (error) {
     logger.log('error', 'app', 'runQuery', error);
+  }
+});
+
+app.post('/runCustomQuery', async (req, res) => {
+  try {
+    const { customQuery } = req.body;
+    const result = await db.customQuery(customQuery);
+    res.json({
+      status: responseStatus.success,
+      result,
+      message: 'Query ejecutada correctamente',
+    });
+    logger.log('log', 'app', 'runCustomQuery', 'Query ejecutada correctamente');
+  } catch (error) {
+    logger.log('error', 'app', 'runCustomQuery', error);
   }
 });

@@ -36,6 +36,24 @@ class Database {
       console.log(e);
     }
   };
+
+  getTableRows = async (tableName) => {
+    try {
+      const res = await this.pool.query(`SELECT * FROM ${tableName}`);
+      return res.rows;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  customQuery = async (query) => {
+    try {
+      const res = await this.pool.query(query);
+      return res.rows;
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }
 
 const db = new Database({

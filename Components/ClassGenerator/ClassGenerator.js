@@ -96,6 +96,21 @@ class ClassGenerator {
     }
   }
 
+  async getTableRows(tableName) {
+    try {
+      const result = await this.dbComponent.getTableRows(tableName);
+      return result;
+    } catch (error) {
+      console.error('Error al obtener las filas de la tabla:', error);
+      logger.log(
+        'error',
+        'ClassGenerator',
+        'getTableRows',
+        `Error al obtener las filas de la tabla: ${error.slice(49)}`,
+      );
+    }
+  }
+
   async run() {
     try {
       const catalog = await this.getCatalog();
