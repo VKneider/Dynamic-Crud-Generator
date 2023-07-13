@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import db from './Components/Database/Database.js';
 
 // Import de Componentes
 import logger from './Components/Logger/Logger.js';
@@ -25,6 +26,7 @@ app.listen(app.get('port'), () => {
 
 app.get('/catalog', async (req, res) => {
   try {
+    console.log('llegó el request');
     res.json({
       status: responseStatus.success,
       catalog,
@@ -63,7 +65,7 @@ app.post('/generateClasses', async (req, res) => {
 });
 
 // todo: mover que los "conditional" sean una propiedad del objeto principal y no de values, que sea un array para poder tener varias condiciones :)
-app.post('/runQuery', async (req, res) => {
+app.post('/createQuery', async (req, res) => {
   try {
     const props = req.body;
 
@@ -113,4 +115,29 @@ app.post('/runQuery', async (req, res) => {
   } catch (error) {
     logger.log('error', 'app', 'runQuery', error);
   }
+});
+
+app.post('/runCustomQuery', async (req, res) => {
+  const { customQuery } = req.body;
+  const result = await db.customQuery(customQuery);
+
+  if (result.status === 'ERROR') {
+    logger.log('error', 'app', 'runCustomQuery', result.res);
+    return res.status(500).json({
+      status: responseStatus.error,
+      message: 'Error al ejecutar la query',
+      rows: [],
+      columns: [],
+      error: result.res,
+    });
+  }
+
+  logger.log('log', 'app', 'runCustomQuery', 'Query ejecutada correctamente');
+  const columns = result.res.fields.map((field) => field.name);
+  res.json({
+    status: responseStatus.success,
+    rows: result.res.rows,
+    columns,
+    message: 'Query ejecutada correctamente',
+  });
 });

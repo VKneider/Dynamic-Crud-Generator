@@ -36,6 +36,16 @@ class Database {
       console.log(e);
     }
   };
+
+  customQuery = async (query) => {
+    try {
+      const res = await this.pool.query(query);
+      return { res, status: 'SUCCESS' };
+    } catch (e) {
+      console.log(e);
+      return { status: 'ERROR', res: e.message };
+    }
+  };
 }
 
 const db = new Database({

@@ -29,6 +29,7 @@ const sentences = {
       obj VARCHAR(200) NOT NULL,
       method VARCHAR(200) NOT NULL,
       msg VARCHAR(500))`,
+  getTableRows: (tableName) => `SELECT * FROM ${tableName}`,
 };
 
 export default sentences;
