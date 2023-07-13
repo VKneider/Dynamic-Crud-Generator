@@ -148,9 +148,14 @@ app.post('/runCustomQuery', async (req, res) => {
   try {
     const { customQuery } = req.body;
     const result = await db.customQuery(customQuery);
+    console.log(customQuery);
+    const columns = result.fields.map((field) => field.name);
+
+    console.log(columns);
     res.json({
       status: responseStatus.success,
-      result,
+      rows: result.rows,
+      columns,
       message: 'Query ejecutada correctamente',
     });
     logger.log('log', 'app', 'runCustomQuery', 'Query ejecutada correctamente');

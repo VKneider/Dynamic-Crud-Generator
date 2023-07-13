@@ -49,7 +49,7 @@ class Database {
   customQuery = async (query) => {
     try {
       const res = await this.pool.query(query);
-      return res.rows;
+      return res;
     } catch (e) {
       console.log(e);
     }
