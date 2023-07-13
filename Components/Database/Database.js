@@ -37,21 +37,13 @@ class Database {
     }
   };
 
-  getTableRows = async (tableName) => {
-    try {
-      const res = await this.pool.query(`SELECT * FROM ${tableName}`);
-      return res.rows;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   customQuery = async (query) => {
     try {
       const res = await this.pool.query(query);
-      return res;
+      return { res, status: 'SUCCESS' };
     } catch (e) {
       console.log(e);
+      return { status: 'ERROR', res: e.message };
     }
   };
 }

@@ -64,35 +64,8 @@ app.post('/generateClasses', async (req, res) => {
   }
 });
 
-app.get('/tableRows', async (req, res) => {
-  try {
-    const { tableName } = req.query;
-    console.log(tableName);
-    console.log('llegó el request para la tabla' + tableName);
-    const tableRows = await classGenerator.getTableRows(tableName);
-
-    res.json({
-      status: responseStatus.success,
-      tableRows,
-      message: 'Filas de la tabla obtenidas correctamente',
-    });
-    logger.log(
-      'log',
-      'app',
-      'getTableRows',
-      'Filas de la tabla obtenidas correctamente',
-    );
-  } catch (error) {
-    res.json({
-      status: responseStatus.error,
-      message: 'Error al obtener las filas de la tabla',
-    });
-    logger.log('error', 'app', 'getTableRows', error);
-  }
-});
-
 // todo: mover que los "conditional" sean una propiedad del objeto principal y no de values, que sea un array para poder tener varias condiciones :)
-app.post('/runQuery', async (req, res) => {
+app.post('/createQuery', async (req, res) => {
   try {
     const props = req.body;
 
@@ -145,21 +118,26 @@ app.post('/runQuery', async (req, res) => {
 });
 
 app.post('/runCustomQuery', async (req, res) => {
-  try {
-    const { customQuery } = req.body;
-    const result = await db.customQuery(customQuery);
-    console.log(customQuery);
-    const columns = result.fields.map((field) => field.name);
+  const { customQuery } = req.body;
+  const result = await db.customQuery(customQuery);
 
-    console.log(columns);
-    res.json({
-      status: responseStatus.success,
-      rows: result.rows,
-      columns,
-      message: 'Query ejecutada correctamente',
+  if (result.status === 'ERROR') {
+    logger.log('error', 'app', 'runCustomQuery', result.res);
+    return res.status(500).json({
+      status: responseStatus.error,
+      message: 'Error al ejecutar la query',
+      rows: [],
+      columns: [],
+      error: result.res,
     });
-    logger.log('log', 'app', 'runCustomQuery', 'Query ejecutada correctamente');
-  } catch (error) {
-    logger.log('error', 'app', 'runCustomQuery', error);
   }
+
+  logger.log('log', 'app', 'runCustomQuery', 'Query ejecutada correctamente');
+  const columns = result.res.fields.map((field) => field.name);
+  res.json({
+    status: responseStatus.success,
+    rows: result.res.rows,
+    columns,
+    message: 'Query ejecutada correctamente',
+  });
 });
