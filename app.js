@@ -119,6 +119,7 @@ app.post('/createQuery', async (req, res) => {
 
 app.post('/runCustomQuery', async (req, res) => {
   const { customQuery } = req.body;
+  console.log('me llegó la query', customQuery);
   const result = await db.customQuery(customQuery);
 
   if (result.status === 'ERROR') {

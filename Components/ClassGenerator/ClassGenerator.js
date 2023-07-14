@@ -65,7 +65,7 @@ class ClassGenerator {
         numeric: 'number',
         'double precision': 'number',
         bigint: 'number',
-        text: 'string',
+        text: 'text',
         character: 'string',
       };
 
