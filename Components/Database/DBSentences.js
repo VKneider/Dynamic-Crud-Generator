@@ -1,24 +1,38 @@
 const sentences = {
   catalogQuery: `SELECT
+  c.table_name,
+  c.column_name,
+  c.data_type,
+  CASE
+      WHEN COUNT(kcu.constraint_name) = 2 THEN 'ambas'
+      ELSE COALESCE(MAX(CASE WHEN tc.constraint_type IN ('PRIMARY KEY', 'FOREIGN KEY') THEN tc.constraint_type END), 'ninguna')
+  END AS constraint_type,
+  (c.column_default LIKE 'nextval%') AS is_serial
+  FROM
+    information_schema.columns c
+  LEFT JOIN
+    information_schema.key_column_usage kcu
+  ON
+    c.table_schema = kcu.table_schema AND
+    c.table_name = kcu.table_name AND
+    c.column_name = kcu.column_name
+  LEFT JOIN
+    information_schema.table_constraints tc
+  ON
+    kcu.table_schema = tc.table_schema AND
+    kcu.table_name = tc.table_name AND
+    kcu.constraint_name = tc.constraint_name
+  WHERE
+    c.table_schema = 'public'
+  GROUP BY
     c.table_name,
     c.column_name,
     c.data_type,
-    CASE
-      WHEN column_name IN (
-        SELECT column_name
-        FROM information_schema.constraint_column_usage
-        WHERE constraint_name IN (
-          SELECT constraint_name
-          FROM information_schema.table_constraints
-          WHERE constraint_type = 'FOREIGN KEY'
-        )
-      ) THEN 'fkey'
-      ELSE 'normal'
-    END AS constraint_type
-  FROM
-    information_schema.columns c
-  WHERE
-    table_schema = 'public'
+    (c.column_default LIKE 'nextval%'),
+    c.ordinal_position
+  ORDER BY
+    c.table_name,
+    c.ordinal_position;
 `,
   insertLog:
     'INSERT INTO log (log_time, type, obj, method, msg) VALUES ($1, $2, $3, $4, $5)',
