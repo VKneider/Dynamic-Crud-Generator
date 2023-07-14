@@ -70,11 +70,18 @@ class ClassGenerator {
       };
 
       result.rows.forEach((row) => {
-        const { table_name, column_name, data_type, constraint_type } = row;
+        const {
+          table_name,
+          column_name,
+          data_type,
+          constraint_type,
+          is_serial,
+        } = row;
         const field = {
           fieldName: column_name,
           type: dataTypes[data_type],
-          isForeign: constraint_type === 'fkey',
+          constraint_type,
+          is_serial: is_serial === true,
         };
 
         if (!catalog[table_name]) {
